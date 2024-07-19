@@ -1,9 +1,10 @@
+import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:examen_4/views/screens/myEvents/widgets/event_map.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:intl/intl.dart';
-
 import '../../../../data/models/event.dart';
 import '../../../../data/models/event_status.dart';
 import '../../../../services/firebase_auth_service.dart';
@@ -40,7 +41,6 @@ class _DetailInfoWidgetState extends State<DetailInfoWidget> {
     }
   }
 
-
   @override
   Widget build(BuildContext context) {
     DateTime addedDate = widget.event.addedDate.toDate();
@@ -50,7 +50,7 @@ class _DetailInfoWidgetState extends State<DetailInfoWidget> {
     String startTimeFormatted = DateFormat("EEEE, h:mm a").format(startTime);
     String endTimeFormatted = DateFormat("h:mm a").format(endTIme);
 
-    return  SingleChildScrollView(
+    return SingleChildScrollView(
       child: Padding(
         padding: const EdgeInsets.all(10.0),
         child: Column(
@@ -66,7 +66,7 @@ class _DetailInfoWidgetState extends State<DetailInfoWidget> {
             const SizedBox(height: 10),
             ListTile(
               leading: const Card(
-                color:  Color(0xff1F41BB),
+                color: Color(0xff1F41BB),
                 child: SizedBox(
                   width: 50,
                   height: 50,
@@ -98,10 +98,12 @@ class _DetailInfoWidgetState extends State<DetailInfoWidget> {
                 } else {
                   final placemarks = placemarkSnapshot.data!;
                   final placemark =
-                  placemarks.isNotEmpty ? placemarks.first : null;
+                      placemarks.isNotEmpty ? placemarks.first : null;
+                  final geoPoint = widget.event.geoPoint;
+                  final point = Point(geoPoint.latitude, geoPoint.longitude);
                   return ListTile(
                     leading: const Card(
-                      color:  Color(0xff1F41BB),
+                      color: Color(0xff1F41BB),
                       child: SizedBox(
                         width: 50,
                         height: 50,
@@ -120,7 +122,7 @@ class _DetailInfoWidgetState extends State<DetailInfoWidget> {
             ),
             ListTile(
               leading: const Card(
-                color:  Color(0xff1F41BB),
+                color: Color(0xff1F41BB),
                 child: SizedBox(
                   width: 50,
                   height: 50,
@@ -142,7 +144,9 @@ class _DetailInfoWidgetState extends State<DetailInfoWidget> {
                     child: CircularProgressIndicator(),
                   );
                 }
-                if (snapshot.hasError || !snapshot.hasData || snapshot.data == null) {
+                if (snapshot.hasError ||
+                    !snapshot.hasData ||
+                    snapshot.data == null) {
                   return const Text("Tashkilotchi ismi noma'lum");
                 }
                 final user = snapshot.data!;
@@ -166,7 +170,8 @@ class _DetailInfoWidgetState extends State<DetailInfoWidget> {
                     ),
                     title: Text(
                       user['userName'] ?? "Tashkilotchi ismi noma'lum",
-                      style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
+                      style: const TextStyle(
+                          fontSize: 18, fontWeight: FontWeight.w500),
                     ),
                     subtitle: const Text("Tadbir tashkilotchisi"),
                   ),
@@ -183,13 +188,14 @@ class _DetailInfoWidgetState extends State<DetailInfoWidget> {
               padding: const EdgeInsets.all(8.0),
               child: Text(
                 widget.event.description,
-                style: const TextStyle(fontWeight: FontWeight.w400, fontSize: 18),
+                style:
+                    const TextStyle(fontWeight: FontWeight.w400, fontSize: 18),
               ),
-            )
+            ),
+            EventMap(location: widget.event.geoPoint),
           ],
         ),
       ),
     );
-
   }
 }

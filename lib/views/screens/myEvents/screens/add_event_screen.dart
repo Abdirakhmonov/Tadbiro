@@ -160,7 +160,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
                 ),
                 const SizedBox(height: 20),
                 const Text(
-                  "Rasm yoki video yuklash",
+                  "Rasm  yuklash",
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 18,
@@ -168,7 +168,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
                 ),
                 const SizedBox(height: 10),
                 ImageVideoContainer(
-                  title: "Camera",
+                  title: "Rasm",
                   onTap: () async {
                     final String? imageUrlString = await showDialog(
                       barrierDismissible: false,

@@ -110,19 +110,15 @@ class _HomeScreenState extends State<HomeScreen> {
                                   Card(
                                     child: Padding(
                                       padding: EdgeInsets.all(6.0),
-                                      child: Column(
+                                      child: Row(
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
-                                          Text(event.addedDate.toDate().day.toString()),
-                                          Text(event.addedDate.toDate().month.toString()),
+                                          Text(event.addedDate.toDate().toString()),
                                         ],
                                       ),
                                     ),
                                   ),
-                                  IconButton(
-                                    onPressed: () {},
-                                    icon: Icon(Icons.favorite),
-                                  ),
+
                                 ],
                               ),
                               Column(

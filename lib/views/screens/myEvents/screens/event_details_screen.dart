@@ -23,60 +23,52 @@ class EventDetailsScreen extends StatelessWidget {
     final EventService _eventService = EventService();
 
     return Scaffold(
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Stack(
-            children: [
-              Container(
-                clipBehavior: Clip.hardEdge,
-                decoration: const BoxDecoration(
-                  borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(20),
-                    bottomRight: Radius.circular(20),
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Stack(
+              children: [
+                Container(
+                  clipBehavior: Clip.hardEdge,
+                  decoration: const BoxDecoration(
+                    borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(20),
+                      bottomRight: Radius.circular(20),
+                    ),
+                  ),
+                  height: 300,
+                  width: double.infinity,
+                  child: Image.network(
+                    event.imageUrl,
+                    fit: BoxFit.cover,
                   ),
                 ),
-                height: 300,
-                width: double.infinity,
-                child: Image.network(
-                  event.imageUrl,
-                  fit: BoxFit.cover,
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 16.0,
-                  vertical: 35,
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    IconButton.filled(
-                      style: IconButton.styleFrom(
-                        backgroundColor: Colors.white,
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16.0,
+                    vertical: 35,
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      IconButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        icon: const Icon(Icons.arrow_back),
                       ),
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      icon: const Icon(Icons.arrow_back, color: Colors.grey),
-                    ),
-                    IconButton(
-                      style: IconButton.styleFrom(
-                        backgroundColor: Colors.white,
-                      ),
-                      onPressed: () {},
-                      icon: const Icon(Icons.favorite,color: Colors.grey),
-                    ),
-                  ],
-                ),
-              )
-            ],
-          ),
-          DetailInfoWidget(
-            event: event,
-            checkUserRegister: false,
-          ),
-        ],
+                    ],
+                  ),
+                )
+              ],
+            ),
+            DetailInfoWidget(
+              event: event,
+              checkUserRegister: false,
+            ),
+          ],
+        ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: Padding(
@@ -86,7 +78,7 @@ class EventDetailsScreen extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             FloatingActionButton(
-              backgroundColor:    Color(0xff1F41BB),
+              backgroundColor: Color(0xff1F41BB),
               onPressed: () async {
                 final data = await showModalBottomSheet(
                   context: context,
@@ -183,7 +175,6 @@ class EventDetailsScreen extends StatelessWidget {
                   IconButton.filled(
                     style: IconButton.styleFrom(
                       backgroundColor: const Color(0xff1F41BB),
-
                     ),
                     icon: const Icon(Icons.add),
                     onPressed: () {
@@ -248,7 +239,7 @@ class EventDetailsScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     FloatingActionButton(
-                      backgroundColor:const Color(0xff1F41BB),
+                      backgroundColor: const Color(0xff1F41BB),
                       onPressed: () {
                         Navigator.pop(context, {
                           'userCount': selectedCount,
@@ -381,7 +372,6 @@ class EventDetailsScreen extends StatelessWidget {
       );
 
       if (pickedTime != null) {
-        final _eventStatusService = EventStatusService();
         Navigator.pop(context);
 
         DateTime selectedDateTime = DateTime(
