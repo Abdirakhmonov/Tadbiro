@@ -1,12 +1,10 @@
-import 'package:examen_4/views/screens/home_screen.dart';
-import 'package:examen_4/views/screens/login_screen.dart';
-import 'package:examen_4/views/screens/settings_screen.dart';
+import 'package:examen_4/views/screens/home_screen/home_screen.dart';
 import 'package:examen_4/views/widgets/check_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../cubits/auth_cubit.dart';
-import '../../cubits/auth_state.dart';
-import '../widgets/my_text_field.dart';
+import '../../../blocs/auth/auth_bloc.dart';
+import '../../../blocs/auth/auth_event.dart';
+import '../../widgets/my_text_field.dart';
 
 class RegistrationScreen extends StatefulWidget {
   const RegistrationScreen({super.key});
@@ -23,37 +21,16 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   final confirmPasswordController = TextEditingController();
   final checkAuth = CheckAuth();
 
-  @override
-  void initState() {
-    super.initState();
-    context.read<AuthCubit>().stream.listen((state) {
-      if (state is AuthenticatedState) {
-        Navigator.pushReplacement(context,
-            MaterialPageRoute(builder: (context) => const HomeScreen()));
-      } else if (state is ErrorAuthState) {
-        _showErrorDialog(state.message);
-      }
-    });
-  }
-
-  void _showErrorDialog(String message) {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: const Text("Bunday foydalnuvchi mavjud!"),
-          content: Text(message),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: const Text('OK'),
+  void _register() {
+    if (_formKey.currentState!.validate()) {
+      context.read<AuthenticationBloc>().add(
+            RegisterUserEvent(
+              email: emailController.text.trim(),
+              username: usernameController.text.trim(),
+              password: passwordController.text.trim(),
             ),
-          ],
-        );
-      },
-    );
+          );
+    }
   }
 
   @override
@@ -115,16 +92,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                       }),
                   const SizedBox(height: 20),
                   GestureDetector(
-                    onTap: () {
-                      if (_formKey.currentState!.validate()) {
-                        final email = emailController.text;
-                        final password = passwordController.text;
-                        final username = usernameController.text;
-                        context
-                            .read<AuthCubit>()
-                            .registerUser(email, password, username);
-                      }
-                    },
+                    onTap: _register,
                     child: Material(
                       elevation: 4, // Add elevation here
                       borderRadius: BorderRadius.circular(6),
@@ -148,10 +116,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   const SizedBox(height: 20),
                   TextButton(
                       onPressed: () {
-                        Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const LoginScreen()));
+                        Navigator.pop(context);
                       },
                       child: const Text(
                         "Already have an account",

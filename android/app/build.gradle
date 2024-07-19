@@ -28,7 +28,7 @@ if (flutterVersionName == null) {
 
 android {
     namespace = "com.example.examen_4"
-    compileSdk = flutter.compileSdkVersion
+    compileSdk = 34
     ndkVersion = flutter.ndkVersion
 
     compileOptions {
@@ -58,4 +58,8 @@ android {
 
 flutter {
     source = "../.."
+}
+
+dependencies {
+    implementation 'com.yandex.android:maps.mobile:4.6.1-full'
 }
